@@ -37,7 +37,7 @@ As shown here, the quality of the images are not very good:
    - missing apple pie in the last apple pie pic
    - strange colours of the last baby pork ribs pic
 
-The size of the images are also inconsistent as shown in the height against width plot shown below:
+The size of the images are also inconsistent as shown in the height against width plot shown below, but all the images have at least one side with 512 pixels, so we dont have to worry about extremely small images that is pixelated.
 
 <img src = "https://github.com/rileykwok/Food-Classification/blob/master/img/picsize.PNG" width="400">
 
@@ -84,20 +84,26 @@ Check the images from data generator. As shown, the images are slightly distorte
 To create a convolution neural network to classfied the images, Keras Sequencial model is used.
 
 
-Convol
+
 **Batch normalisation:** Tested with batch normalisation layers and removed all dropout layers. It results in faster training and higher learning rates, but it caused more overfitting (large diffence between train and test accuracy) than dropout, thus batch normalisation has not been used in this case.
 **Optimizers:** Adam final accuracy slightly out-performs RMSProp and also converge to minima faster than RMSProp as it's similar to RMSProp + Momentum.
-**Initializers:** 
+**Activation Function:** 
+*ReLu* activation used at convolution layers to produce a sparse matrix, which requires less computational power then sigmoid or tanh which produce dense matrix. Also, it reduced the likelihood of vanishing gradients. When a>0, the gradient has a constant value, so it results in faster learning than sigmoids as gradients becomes increasingly small as the absolute value of x increases. 
+*Softmax* activation used at the last layer to assign the probability of each class.
+**Initializers:** Kernal weights are initialized using He normal initializers which helps to attain a global minimum of the cost function faster and more efficiently.The weights differ in range depending on the size of the previous layer of neurons and this is a good inializer to be used with ReLu activation function.
 
 
 ## Training
 
 <img src = "https://github.com/rileykwok/Food-Classification/blob/master/img/history.PNG" width="1000">
 
+Overfitting starts at _ epochs, model weights saved at _ epoch where the model achieved validation accuracy of %.
 
 ## Results Evaluation
 
 The confusion matrix of 750 test images:
+
+<img src = "https://github.com/rileykwok/Food-Classification/blob/master/img/confusionmatrix.PNG" width="1000">
 
 As shown, most of the wrong prediction are between apple pie and baklava. This can be explained by that fact that both of these food types have similar texture and colour, as both are made from pastry.
 
@@ -115,12 +121,15 @@ To determine 'how wrong' the model predicts each images, the wrongly predicted i
 
 
 Keras Intializers: 
-https://towardsdatascience.com/hyper-parameters-in-action-part-ii-weight-initializers-35aee1a28404
-https://becominghuman.ai/priming-neural-networks-with-an-appropriate-initializer-7b163990ead
-Optimizers:
-http://ruder.io/optimizing-gradient-descent/index.html#visualizationofalgorithms
-Batch Normalization:
-https://www.dlology.com/blog/one-simple-trick-to-train-keras-model-faster-with-batch-normalization/
-https://arxiv.org/abs/1801.05134
-https://medium.com/deeper-learning/glossary-of-deep-learning-batch-normalisation-8266dcd2fa82
+- [Hyper-parameters in Action! Part II — Weight Initializers](https://towardsdatascience.com/hyper-parameters-in-action-part-ii-weight-initializers-35aee1a28404)
+- [Priming neural networks with an appropriate initializer.](https://becominghuman.ai/priming-neural-networks-with-an-appropriate-initializer-7b163990ead)
 
+Optimizers:
+- [An overview of gradient descent optimization algorithms](http://ruder.io/optimizing-gradient-descent/index.html#visualizationofalgorithms)
+
+Batch Normalization:
+- [Understanding the Disharmony between Dropout and Batch Normalization by Variance Shift](https://arxiv.org/abs/1801.05134)
+- [Glossary of Deep Learning: Batch Normalisation](https://medium.com/deeper-learning/glossary-of-deep-learning-batch-normalisation-8266dcd2fa82)
+
+Activations:
+- [Understanding Activation Functions in Neural Networks](https://medium.com/the-theory-of-everything/understanding-activation-functions-in-neural-networks-9491262884e0)
