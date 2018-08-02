@@ -83,7 +83,34 @@ Check the images from data generator. As shown, the images are slightly distorte
 ## Model
 To create a convolution neural network to classfied the images, Keras Sequencial model is used.
 
-<img src = "https://github.com/rileykwok/Food-Classification/blob/master/img/modelstructure.PNG" width="800">
+```python
+model = Sequential()
+model.add(Conv2D(filters = 32, kernel_size = (5,5), strides = 2, padding = 'Same', activation ='relu', input_shape = (224,224,3), kernel_initializer='he_normal'))
+model.add(Conv2D(filters = 32, kernel_size = (5,5), strides = 2, padding = 'Same', activation ='relu',kernel_initializer='he_normal'))
+model.add(MaxPool2D(pool_size=(2,2)))
+model.add(Dropout(0.2))
+model.add(Conv2D(filters = 64, kernel_size = (3,3),padding = 'Same', activation ='relu',kernel_initializer='he_normal'))
+model.add(Conv2D(filters = 64, kernel_size = (3,3),padding = 'Same', activation ='relu',kernel_initializer='he_normal'))
+model.add(MaxPool2D(pool_size=(2,2)))
+model.add(Dropout(0.2))
+model.add(Conv2D(filters = 128, kernel_size = (2,2),padding = 'Same', activation ='relu',kernel_initializer='he_normal'))
+model.add(Conv2D(filters = 128, kernel_size = (2,2),padding = 'Same', activation ='relu',kernel_initializer='he_normal'))
+model.add(MaxPool2D(pool_size=(2,2)))
+model.add(Dropout(0.2))
+model.add(Conv2D(filters = 256, kernel_size = (2,2),padding = 'Same', activation ='relu',kernel_initializer='he_normal'))
+model.add(Conv2D(filters = 256, kernel_size = (2,2),padding = 'Same', activation ='relu',kernel_initializer='he_normal'))
+model.add(GlobalAveragePooling2D())
+model.add(Dense(512, activation = "relu",kernel_initializer='he_normal'))
+model.add(Dropout(0.2))
+model.add(Dense(3, activation = "softmax",kernel_initializer='he_normal'))
+
+#callbacks
+checkpointer = ModelCheckpoint(filepath='model.hdf5', verbose=1, save_best_only=True, save_weights_only=True)
+earlystopping = EarlyStopping(monitor='val_loss', min_delta=0.01, patience=20, mode='auto')
+reduceLR = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10, mode='auto')
+
+model.compile(optimizer = 'Adam' , loss = "categorical_crossentropy", metrics=["accuracy"])
+```
 
 
 **Batch normalisation:** Tested with batch normalisation layers and removed all dropout layers. It results in faster training and higher learning rates, but it caused more overfitting (large diffence between train and test accuracy) than dropout, thus batch normalisation has not been used in this case.
@@ -99,7 +126,8 @@ To create a convolution neural network to classfied the images, Keras Sequencial
 
 ## Training
 
-<img src = "https://github.com/rileykwok/Food-Classification/blob/master/img/history.PNG" width="1000">
+<img src = "https://github.com/rileykwok/Food-Classification/blob/master/img/historya.PNG" width="400">
+<img src = "https://github.com/rileykwok/Food-Classification/blob/master/img/historyl.PNG" width="400">
 
 Overfitting starts at _ epochs, model weights saved at _ epoch where the model achieved validation accuracy of %.
 
@@ -107,7 +135,7 @@ Overfitting starts at _ epochs, model weights saved at _ epoch where the model a
 
 The confusion matrix of 750 test images:
 
-<img src = "https://github.com/rileykwok/Food-Classification/blob/master/img/confusionmatrix.PNG" width="1000">
+<img src = "https://github.com/rileykwok/Food-Classification/blob/master/img/cm.PNG" width="300">
 
 As shown, most of the wrong prediction are between apple pie and baklava. This can be explained by that fact that both of these food types have similar texture and colour, as both are made from pastry.
 
