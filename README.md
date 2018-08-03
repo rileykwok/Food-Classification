@@ -123,11 +123,13 @@ model.compile(optimizer = 'Adam' , loss = "categorical_crossentropy", metrics=["
 
 **Initializers:** Kernal weights are initialized using *He normal* initializers which helps to attain a global minimum of the cost function faster and more efficiently.The weights differ in range depending on the size of the previous layer of neurons and this is a good inializer to be used with *ReLu* activation function.
 
+**Regularization:** *L2 regularization* is implemented aim to decrease the complexity of the model and minimise overfitting by penalising weights with large magnitudes. 
+
 
 ## Training
 
-<img src = "https://github.com/rileykwok/Food-Classification/blob/master/img/historya.PNG" width="400">
-<img src = "https://github.com/rileykwok/Food-Classification/blob/master/img/historyl.PNG" width="400">
+<img src = "https://github.com/rileykwok/Food-Classification/blob/master/img/history.PNG" width="1000">
+
 
 Overfitting starts at _ epochs, model weights saved at _ epoch where the model achieved validation accuracy of %.
 
@@ -148,8 +150,6 @@ To determine 'how wrong' the model predicts each images, the wrongly predicted i
 ## Conclusion
 
 With the given data sets for 3 classes of food: apple pie, baby pork ribs and baklavas, the model final accuracy reached ___ % with validation loss of __ . The main cause of error is due to the similarity between baklavas and applie pie as they both exhibit alike texture and colours.
-
-I believed that with the model could achieve a even higher accuracy by training on data set with more and cleaner images. 
 
 
 ## Reference
@@ -175,3 +175,5 @@ Class Activation Maps:
 - [Learning Deep Features for Discriminative Localization](http://cnnlocalization.csail.mit.edu/)
 - [Learning Deep Features for Discriminative Localization](https://arxiv.org/pdf/1512.04150.pdf)
 - [Global Average Pooling Layers for Object Localization](https://alexisbcook.github.io/2017/global-average-pooling-layers-for-object-localization/)
+
+Regularization: [L1 and L2 Regularization Methods](https://towardsdatascience.com/l1-and-l2-regularization-methods-ce25e7fc831c)
