@@ -135,14 +135,20 @@ Overfitting starts at _ epochs, model weights saved at _ epoch where the model a
 
 ## Results Evaluation
 
+Preview some predictions from the model:
+
+<img src = "https://github.com/rileykwok/Food-Classification/blob/master/img/predictions.PNG" width="1000">
+
 The confusion matrix of 750 test images:
 
 <img src = "https://github.com/rileykwok/Food-Classification/blob/master/img/cm.PNG" width="300">
 
-As shown, most of the wrong prediction are between apple pie and baklava. This can be explained by that fact that both of these food types have similar texture and colour, as both are made from pastry.
+As shown in the confusion matrix, most of the wrong prediction are between apple pie and baklava. To visualise the model performance for each class, ROC curve is plotted on the true positive rate against false positive rate. As anticipated, the ROC curve for the baby pork rib class has the best performance. The performance of the apple pie and baklava are not as good, this might be explained by that fact that both of these food types have similar texture and colour, as both are made from pastry and the model finds it harder to classify between them.
+
+<img src = "https://github.com/rileykwok/Food-Classification/blob/master/img/roc.PNG" width="600">
 
 Now, let's examine in more detail how the model performs and evaluate those 'wrong-est' predictions.
-To determine 'how wrong' the model predicts each images, the wrongly predicted images are sorted by the difference between the *probability of predicted label* and the *probability of the true class label*
+To determine 'how wrong' the model predicts each images, the wrongly predicted images are sorted by the `difference between the *probability of predicted label* and the *probability of the true class label*`
 
 <img src = "https://github.com/rileykwok/Food-Classification/blob/master/img/wrongpredictions.PNG" width="1000">
 
@@ -176,4 +182,9 @@ Class Activation Maps:
 - [Learning Deep Features for Discriminative Localization](https://arxiv.org/pdf/1512.04150.pdf)
 - [Global Average Pooling Layers for Object Localization](https://alexisbcook.github.io/2017/global-average-pooling-layers-for-object-localization/)
 
-Regularization: [L1 and L2 Regularization Methods](https://towardsdatascience.com/l1-and-l2-regularization-methods-ce25e7fc831c)
+Grad CAM:
+- [Grad-CAM: Why did you say that? Visual Explanations from Deep Networks via Gradient-based Localization](https://arxiv.org/pdf/1610.02391v1.pdf)
+- [Deep Learning with Python Book by Francois Chollet](http://www.deeplearningitalia.com/wp-content/uploads/2017/12/Dropbox_Chollet.pdf)
+
+Regularization: 
+- [L1 and L2 Regularization Methods](https://towardsdatascience.com/l1-and-l2-regularization-methods-ce25e7fc831c)
