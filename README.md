@@ -34,7 +34,7 @@ As shown here, the quality of the images are not very good:
 - wrong labels 
    - empty plate in the first pic of the baklava
    - looks more like a pizza than an apple pie for the first apple pie pic
-   - missing apple pie in the last apple pie pic
+   - looks like an ice cream than an apple pie in the last apple pie pic
    - strange colours of the last baby pork ribs pic
 
 The size of the images are also inconsistent as shown in the height against width plot shown below, but all the images have at least one side with 512 pixels, so we dont have to worry about extremely small images that is pixelated.
@@ -71,6 +71,7 @@ train_generator = train_datagen.flow_from_directory(
         batch_size=64)
 
 test_datagen = ImageDataGenerator(rescale=1./255)    # rescale to [0-1] for testing set
+
 test_generator = test_datagen.flow_from_directory(
         "../input/food102/food101/food101/test",
         target_size=(224,224),
@@ -131,7 +132,7 @@ model.compile(optimizer = 'Adam' , loss = "categorical_crossentropy", metrics=["
 <img src = "https://github.com/rileykwok/Food-Classification/blob/master/img/history.PNG" width="1000">
 
 
-Overfitting starts at _ epochs, model weights saved at _ epoch where the model achieved validation accuracy of %.
+Model accuracy increased over each epoch, overfitting started at around 40 epochs, model weights saved at _ epoch where the model achieved validation accuracy of **78.9%**.
 
 ## Results Evaluation
 
@@ -143,7 +144,7 @@ The confusion matrix of 750 test images:
 
 <img src = "https://github.com/rileykwok/Food-Classification/blob/master/img/cm.PNG" width="300">
 
-As shown in the confusion matrix, most of the wrong prediction are between apple pie and baklava. To visualise the model performance for each class, ROC curve is plotted on the true positive rate against false positive rate. As anticipated, the ROC curve for the baby pork rib class has the best performance. The performance of the apple pie and baklava are not as good, this might be explained by that fact that both of these food types have similar texture and colour, as both are made from pastry and the model finds it harder to classify between them.
+As shown in the confusion matrix, most of the wrong prediction are between apple pie and baklava. To visualise the model performance for each class, ROC curve is plotted on the true positive rate against false positive rate. As anticipated, the ROC curve for the baby pork rib class has the best performance with an AUC score of 0.99. The performance of the apple pie and baklava are not as good, this might be explained by that fact that both of these food types have similar texture and colour, as both are made from pastry and the model finds it harder to classify between them.
 
 <img src = "https://github.com/rileykwok/Food-Classification/blob/master/img/roc.PNG" width="600">
 
@@ -155,10 +156,13 @@ To determine 'how wrong' the model predicts each images, the wrongly predicted i
 
 ## Conclusion
 
-With the given data sets for 3 classes of food: apple pie, baby pork ribs and baklavas, the model final accuracy reached ___ % with validation loss of __ . The main cause of error is due to the similarity between baklavas and applie pie as they both exhibit alike texture and colours.
+With the given data sets for 3 classes of food: apple pie, baby pork ribs and baklavas, the model final accuracy reached 78.9%  with validation loss of 0.49. The main cause of error is due to the similarity between baklavas and applie pie as they both exhibit alike texture and colours.
 
 
 ## Reference
+
+Food-101 Dataset
+- [Food-101 – Mining Discriminative Components with Random Forests](https://www.vision.ee.ethz.ch/datasets_extra/food-101/)
 
 Weight Intializers: 
 - [Hyper-parameters in Action! Part II — Weight Initializers](https://towardsdatascience.com/hyper-parameters-in-action-part-ii-weight-initializers-35aee1a28404)
@@ -173,14 +177,6 @@ Batch Normalization:
 
 Activation Functions:
 - [Understanding Activation Functions in Neural Networks](https://medium.com/the-theory-of-everything/understanding-activation-functions-in-neural-networks-9491262884e0)
-
-Food-101 Dataset
-- [Food-101 – Mining Discriminative Components with Random Forests](https://www.vision.ee.ethz.ch/datasets_extra/food-101/)
-
-Class Activation Maps:
-- [Learning Deep Features for Discriminative Localization](http://cnnlocalization.csail.mit.edu/)
-- [Learning Deep Features for Discriminative Localization](https://arxiv.org/pdf/1512.04150.pdf)
-- [Global Average Pooling Layers for Object Localization](https://alexisbcook.github.io/2017/global-average-pooling-layers-for-object-localization/)
 
 Grad CAM:
 - [Grad-CAM: Why did you say that? Visual Explanations from Deep Networks via Gradient-based Localization](https://arxiv.org/pdf/1610.02391v1.pdf)
