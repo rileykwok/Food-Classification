@@ -103,7 +103,7 @@ model.add(Conv2D(filters = 256, kernel_size = (2,2),padding = 'Same', activation
 model.add(GlobalAveragePooling2D())
 model.add(Dense(512, activation = "relu",kernel_initializer='he_normal'))
 model.add(Dropout(0.2))
-model.add(Dense(3, activation = "softmax",kernel_initializer='he_normal'))
+model.add(Dense(3, activation = "softmax",kernel_initializer='he_normal',kernel_regularizer=l2()))
 
 #callbacks
 checkpointer = ModelCheckpoint(filepath='model.hdf5', verbose=1, save_best_only=True, save_weights_only=True)
@@ -111,6 +111,10 @@ earlystopping = EarlyStopping(monitor='val_loss', min_delta=0.01, patience=20, m
 reduceLR = ReduceLROnPlateau(monitor='val_loss', factor=0.5, patience=10, mode='auto')
 
 model.compile(optimizer = 'Adam' , loss = "categorical_crossentropy", metrics=["accuracy"])
+
+history = model.fit_generator(train_generator,steps_per_epoch=2250/64,
+                              validation_data=test_generator,validation_steps=750/64, 
+                              epochs=100, callbacks=[checkpointer, reduceLR, earlystopping])
 ```
 
 
@@ -132,17 +136,17 @@ model.compile(optimizer = 'Adam' , loss = "categorical_crossentropy", metrics=["
 <img src = "https://github.com/rileykwok/Food-Classification/blob/master/img/history.PNG" width="1000">
 
 
-Model accuracy increased over each epoch, overfitting started at around 40 epochs, model weights saved at _ epoch where the model achieved validation accuracy of **78.9%**.
+Model accuracy increased over each epoch, overfitting started at around 40 epochs. The model achieved validation accuracy of **78.9%** with a 0.49 cross entropy validation loss.
 
 ## Results Evaluation
 
 Preview some predictions from the model:
 
-<img src = "https://github.com/rileykwok/Food-Classification/blob/master/img/predictions.PNG" width="1000">
+<img src = "https://github.com/rileykwok/Food-Classification/blob/master/img/prediction.PNG" width="1000">
 
 The confusion matrix of 750 test images:
 
-<img src = "https://github.com/rileykwok/Food-Classification/blob/master/img/cm.PNG" width="300">
+<img src = "https://github.com/rileykwok/Food-Classification/blob/master/img/cm.PNG" width="500">
 
 As shown in the confusion matrix, most of the wrong prediction are between apple pie and baklava. To visualise the model performance for each class, ROC curve is plotted on the true positive rate against false positive rate. As anticipated, the ROC curve for the baby pork rib class has the best performance with an AUC score of 0.99. The performance of the apple pie and baklava are not as good, this might be explained by that fact that both of these food types have similar texture and colour, as both are made from pastry and the model finds it harder to classify between them.
 
@@ -156,7 +160,7 @@ To determine 'how wrong' the model predicts each images, the wrongly predicted i
 
 ## Conclusion
 
-With the given data sets for 3 classes of food: apple pie, baby pork ribs and baklavas, the model final accuracy reached 78.9%  with validation loss of 0.49. The main cause of error is due to the similarity between baklavas and applie pie as they both exhibit alike texture and colours.
+With the given data sets for 3 classes of food: apple pie, baby pork ribs and baklavas, the model final accuracy reached 78.9%  with cross entropy validation loss of 0.49. The main cause of error is due to the similarity between baklavas and applie pie as they both exhibit alike texture and colours.
 
 
 ## Reference
